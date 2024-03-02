@@ -14,7 +14,7 @@ export function Script({ src }: PropsWithChildren<{ src: Function }>) {
   return <script defer>{body}</script>;
 }
 
-export function seperateFileExtension(name: string) {
+export function separateFileExtension(name: string) {
   return [
     name.substring(0, name.lastIndexOf(".")),
     name.substring(name.lastIndexOf("."), name.length),
