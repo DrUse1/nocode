@@ -15,32 +15,25 @@ def perform_logistic_regression(data, target_variable, test_size=0.2):
     Returns:
     - results: Dictionary containing logistic regression evaluation metrics
     """
-    # Check if the target variable exists in the dataset
     if target_variable not in data.columns:
         raise ValueError(f"Target variable '{target_variable}' not found in the dataset.")
 
-    # Extract features (X) and target variable (y)
     X = data.drop(columns=[target_variable])
     y = data[target_variable]
 
-    # Convert DataFrame to NumPy arrays if needed
     if isinstance(X, pd.DataFrame):
         X = X.values
 
     if isinstance(y, pd.Series):
         y = y.values
 
-    # Split the dataset into training and testing sets
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=42)
 
-    # Create a logistic regression model
     model = LogisticRegression()
     model.fit(X_train, y_train)
 
-    # Make predictions on the test set
     y_pred = model.predict(X_test)
 
-    # Calculate evaluation metrics
     accuracy = accuracy_score(y_test, y_pred)
     precision = precision_score(y_test, y_pred)
     recall = recall_score(y_test, y_pred)
@@ -48,7 +41,6 @@ def perform_logistic_regression(data, target_variable, test_size=0.2):
     roc_auc = roc_auc_score(y_test, y_pred)
     confusion = confusion_matrix(y_test, y_pred)
 
-    # Create a dictionary to store results
     results = {
         "Accuracy": accuracy,
         "Precision": precision,
