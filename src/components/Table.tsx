@@ -1,13 +1,13 @@
 import { Html } from "@kitajs/html";
-import { cn } from "../lib/utils";
+import { cn } from "$/lib/utils";
 
 export function Table({ className, ...props }: ElementProps<JSX.HtmlTableTag>) {
   return (
-    <table
-      class={cn("h-max w-full caption-bottom text-sm", className)}
-      {...props}>
-      {props.children as unknown}
-    </table>
+    <div class="relative w-full overflow-auto">
+      <table class={cn("w-full caption-bottom text-sm", className)} {...props}>
+        {props.children as unknown}
+      </table>
+    </div>
   );
 }
 
@@ -24,7 +24,9 @@ export function TableCaption({
   ...props
 }: ElementProps<JSX.HtmlTag>) {
   return (
-    <caption class={cn("text-secondary mt-4 text-sm", className)} {...props}>
+    <caption
+      class={cn("text-muted-foreground mt-4 text-sm", className)}
+      {...props}>
       {props.children as unknown}
     </caption>
   );
@@ -53,7 +55,7 @@ export function TableFooter({
   return (
     <tfoot
       class={cn(
-        "bg-secondary/50 border-t font-medium [&>tr]:last:border-b-0",
+        "bg-muted/50 border-t font-medium [&>tr]:last:border-b-0",
         className,
       )}
       {...props}>
@@ -69,7 +71,7 @@ export function TableHead({
   return (
     <th
       class={cn(
-        "text-secondary h-10 px-2 text-left align-middle font-medium [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]",
+        "text-muted-foreground h-10 px-2 text-left align-middle font-medium [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]",
         className,
       )}
       {...props}>
@@ -96,7 +98,7 @@ export function TableRow({
   return (
     <tr
       class={cn(
-        "hover:bg-secondary/50 data-[state=selected]:bg-secondary border-b transition-colors",
+        "hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors",
         className,
       )}
       {...props}>

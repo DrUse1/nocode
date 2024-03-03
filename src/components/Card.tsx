@@ -1,11 +1,11 @@
 import { Html } from "@kitajs/html";
-import { cn } from "../lib/utils";
+import { cn } from "$/lib/utils";
 
 export function Card({ className, ...props }: ElementProps<JSX.HtmlTag>) {
   return (
     <div
       class={cn(
-        "space-y-6 overflow-auto rounded-xl border bg-white p-6 text-black shadow",
+        "bg-card text-card-foreground rounded-xl border shadow",
         className,
       )}
       {...props}>
@@ -16,7 +16,7 @@ export function Card({ className, ...props }: ElementProps<JSX.HtmlTag>) {
 
 export function CardHeader({ className, ...props }: ElementProps<JSX.HtmlTag>) {
   return (
-    <div class={cn("flex flex-col space-y-1.5", className)} {...props}>
+    <div class={cn("flex flex-col space-y-1.5 p-6", className)} {...props}>
       {props.children as unknown}
     </div>
   );
@@ -27,7 +27,7 @@ export function CardContent({
   ...props
 }: ElementProps<JSX.HtmlTag>) {
   return (
-    <div class={cn("flex flex-col gap-2", className)} {...props}>
+    <div class={cn("p-6 pt-0", className)} {...props}>
       {props.children as unknown}
     </div>
   );
@@ -48,7 +48,7 @@ export function CardDescription({
   ...props
 }: ElementProps<JSX.HtmlTag>) {
   return (
-    <p class={cn("text-sm text-secondary", className)} {...props}>
+    <p class={cn("text-muted-foreground text-sm", className)} {...props}>
       {props.children as unknown}
     </p>
   );
@@ -56,7 +56,7 @@ export function CardDescription({
 
 export function CardFooter({ className, ...props }: ElementProps<JSX.HtmlTag>) {
   return (
-    <div class={cn("items-center", className)} {...props}>
+    <div class={cn("flex items-center p-6 pt-0", className)} {...props}>
       {props.children as unknown}
     </div>
   );

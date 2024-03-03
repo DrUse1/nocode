@@ -4,6 +4,8 @@
 import { TypeOf, z } from "zod";
 import { Router } from "./router";
 import { mainRouter } from "./pages/main";
+import { BaseHtml } from "./layouts/base";
+import Html from "@kitajs/html";
 
 const zodEnv = z.object({
   JWT_SECRET: z.string(),

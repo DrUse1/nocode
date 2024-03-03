@@ -9,6 +9,7 @@
     "skipLibCheck": true,
     "jsx": "react",
     "jsxFactory": "Html.createElement",
-    "jsxFragmentFactory": "Html.Fragment"
+    "jsxFragmentFactory": "Html.Fragment",
+    "paths": { "$/*": ["./src/*"] }
   }
 }

@@ -1,13 +1,22 @@
 import Html from "@kitajs/html";
-import { cn } from "../lib/utils";
+import { cn } from "$/lib/utils";
 
 export function Button({
   className,
+  variant = "default",
+  size = "default",
   ...props
 }: ElementProps<
   JSX.HtmlButtonTag,
   {
-    variant?: "secondary" | "destructive" | "outline" | "ghost" | "link";
+    variant?:
+      | "default"
+      | "secondary"
+      | "destructive"
+      | "outline"
+      | "ghost"
+      | "link";
+    size?: "default" | "sm" | "lg" | "icon";
     href?: string;
   }
 >) {
@@ -16,25 +25,40 @@ export function Button({
       of={props.href ? "a" : "button"}
       {...props}
       class={cn(
-        "inline-flex h-9 items-center justify-center whitespace-nowrap rounded-md bg-black px-4 py-2 text-sm font-medium text-white shadow transition-colors hover:bg-black/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-500 disabled:pointer-events-none disabled:opacity-50",
+        "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50",
         {
-          "bg-secondary hover:bg-secondary/80 text-black":
-            props.variant === "secondary",
+          "bg-primary text-primary-foreground hover:bg-primary/90 shadow":
+            variant === "default",
         },
         {
-          "bg-red-600 hover:bg-red-500": props.variant === "destructive",
+          "text-secondary-foreground bg-secondary shadow-sm hover:bg-secondary/80":
+            variant === "secondary",
         },
         {
-          "hover:bg-secondary border bg-transparent text-black":
-            props.variant === "outline",
+          "bg-destructive text-destructive-foreground hover:bg-destructive/90 shadow-sm":
+            variant === "destructive",
         },
         {
-          "hover:bg-secondary bg-transparent text-black shadow-none":
-            props.variant === "ghost",
+          "bg-background hover:bg-accent hover:text-accent-foreground border border-input shadow-sm":
+            variant === "outline",
         },
         {
-          "h-5 bg-transparent p-0 text-black underline-offset-4 shadow-none hover:bg-transparent hover:underline":
-            props.variant === "link",
+          "hover:bg-accent hover:text-accent-foreground": variant === "ghost",
+        },
+        {
+          "text-primary underline-offset-4 hover:underline": variant === "link",
+        },
+        {
+          "h-9 px-4 py-2": size === "default",
+        },
+        {
+          "h-8 rounded-md px-3 text-xs": size === "sm",
+        },
+        {
+          "h-10 rounded-md px-8": size === "lg",
+        },
+        {
+          "h-9 w-9": size === "icon",
         },
         className,
       )}
@@ -58,9 +82,9 @@ export function Separator({
     <div
       role="none"
       class={cn(
-        "shrink-0 bg-[rgb(228,228,231)]",
+        "bg-border shrink-0",
         {
-          "my-4 h-[1px] w-full": orientation === "horizontal",
+          "h-[1px] w-full": orientation === "horizontal",
           "h-full w-[1px]": orientation === "vertical",
         },
         className,
@@ -87,7 +111,7 @@ export function Input({ className, ...props }: ElementProps<JSX.HtmlInputTag>) {
     <input
       {...props}
       class={cn(
-        "border-input placeholder:text-secondary focus-visible:ring-ring flex h-9 w-full rounded-md border bg-transparent bg-white px-3 py-1 text-sm shadow-sm file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none focus-visible:ring-1 disabled:cursor-not-allowed disabled:opacity-50",
+        "placeholder:text-muted-foreground flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50",
         className,
       )}
     />
@@ -102,7 +126,7 @@ export function Textarea({
     <textarea
       {...props}
       class={cn(
-        "border-input placeholder:text-muted-foreground focus-visible:ring-ring flex min-h-[60px] w-full rounded-md border bg-transparent px-3 py-2 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-1 disabled:cursor-not-allowed disabled:opacity-50",
+        "placeholder:text-muted-foreground flex min-h-[60px] w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50",
         className,
       )}>
       {props.children as unknown}
@@ -120,7 +144,7 @@ export function InputGroup({ className, ...props }: ElementProps<JSX.HtmlTag>) {
 
 export function InputError({ className, ...props }: ElementProps<JSX.HtmlTag>) {
   return (
-    <span class={cn("text-sm text-red-400 empty:hidden", className)} {...props}>
+    <span class={cn("text-error text-sm empty:hidden", className)} {...props}>
       {props.children as unknown}
     </span>
   );
@@ -128,11 +152,12 @@ export function InputError({ className, ...props }: ElementProps<JSX.HtmlTag>) {
 
 export function Badge({
   className,
+  variant = "default",
   ...props
 }: ElementProps<
   JSX.HtmlTag,
   {
-    variant?: "secondary" | "destructive" | "outline" | "ghost" | "link";
+    variant?: "default" | "secondary" | "destructive" | "outline";
     href?: string;
   }
 >) {
@@ -140,17 +165,21 @@ export function Badge({
     <div
       {...props}
       class={cn(
-        "focus:ring-ring inline-flex items-center rounded-md border border-transparent bg-black px-2.5 py-0.5 text-xs font-semibold text-white shadow transition-colors hover:bg-black/80 focus:outline-none focus:ring-2 focus:ring-offset-2",
+        "inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
         {
-          "bg-secondary hover:bg-secondary/80 text-black":
-            props.variant === "secondary",
+          "bg-primary text-primary-foreground hover:bg-primary/80 border-transparent shadow":
+            variant === "default",
         },
         {
-          "bg-red-600 hover:bg-red-500": props.variant === "destructive",
+          "text-secondary-foreground border-transparent bg-secondary hover:bg-secondary/80":
+            variant === "secondary",
         },
         {
-          "hover:bg-secondary border border-[#e5e7eb] bg-transparent text-black shadow-none":
-            props.variant === "outline",
+          "bg-destructive text-destructive-foreground hover:bg-destructive/80 border-transparent shadow":
+            variant === "destructive",
+        },
+        {
+          "text-foreground": variant === "outline",
         },
         className,
       )}
