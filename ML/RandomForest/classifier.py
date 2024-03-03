@@ -2,7 +2,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
 
-def train_and_evaluate_classifier(data, target_variable, n_estimators=100, max_depth=None, random_state=None):
+def classfier_random_forest(data, target_variable, n_estimators=100, max_depth=None, random_state=None):
   
     X = data.drop(columns=[target_variable])
     y = data[target_variable]
