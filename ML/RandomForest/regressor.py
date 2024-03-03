@@ -1,7 +1,7 @@
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 
-def train_and_evaluate_regressor(data, target_variable, n_estimators=100, max_depth=None, random_state=None):
+def regressor_random_forest(data, target_variable, n_estimators=100, max_depth=None, random_state=None):
     X = data.drop(columns=[target_variable])
     y = data[target_variable]
 
