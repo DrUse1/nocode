@@ -4,34 +4,39 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 47.4% 11.2%;
+    --test: hsl(222.2 47.4% 11.2%);
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --mainWhite: 0 0 99%;
+    --mainBlack: 0 0 10%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 47.4% 11.2%;
+    --background: var(--mainWhite);
+    --foreground: var(--mainBlack);
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
+    --primary: var(--mainBlack);
+    --primary-foreground: var(--mainWhite);
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 47.4% 11.2%;
+    --secondary: 0 0 95%;
+    --secondary-foreground: var(--mainBlack);
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --accent: 0 0 96%;
+    --accent-foreground: var(--mainBlack);
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --card: 0 0 100%;
+    --card-foreground: var(--mainBlack);
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --muted: 0 0 96%;
+    --muted-foreground: 0 0 50%;
+
+    --popover: 0 0 100%;
+    --popover-foreground: 0 0 11%;
+
+    --border: 0 0 91%;
+    --input: 0 0 91%;
 
     --destructive: 0 100% 50%;
     --destructive-foreground: 210 40% 98%;
 
-    --ring: 215 20.2% 65.1%;
+    --ring: 0 0 65%;
 
     --error: 0 99% 71%;
 
@@ -39,34 +44,34 @@
   }
 
   .dark {
-    --background: 224 71% 4%;
-    --foreground: 213 31% 91%;
+    --background: 0 0 1%;
+    --foreground: var(--mainWhite);
 
-    --muted: 223 47% 11%;
-    --muted-foreground: 215.4 16.3% 56.9%;
+    --primary: var(--mainWhite);
+    --primary-foreground: var(--mainBlack);
 
-    --accent: 216 34% 17%;
-    --accent-foreground: 210 40% 98%;
+    --secondary: 0 0 15%;
+    --secondary-foreground: var(--mainWhite);
 
-    --popover: 224 71% 4%;
-    --popover-foreground: 215 20.2% 65.1%;
+    --muted: 0 0 10%;
+    --muted-foreground: 0 0 57%;
 
-    --border: 216 34% 17%;
-    --input: 216 34% 17%;
+    --accent: 0 0 17%;
+    --accent-foreground: 0 0 98%;
 
-    --card: 224 71% 4%;
-    --card-foreground: 213 31% 91%;
+    --card: 0 0 4%;
+    --card-foreground: var(--mainWhite);
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 1.2%;
+    --popover: 0 0 4%;
+    --popover-foreground: 0 0 65%;
 
-    --secondary: 222.2 47.4% 11.2%;
-    --secondary-foreground: 210 40% 98%;
+    --border: 0 0 17%;
+    --input: 0 0 17%;
 
     --destructive: 0 63% 31%;
     --destructive-foreground: 210 40% 98%;
 
-    --ring: 216 34% 17%;
+    --ring: 0 0 17%;
 
     --radius: 0.5rem;
   }
@@ -92,8 +97,8 @@ input::-webkit-inner-spin-button {
 }
 
 .toggle {
-  --bg: rgb(183, 183, 183);
-  --badge: rgb(233, 233, 233);
+  --bg: hsl(var(--input));
+  --badge: hsl(var(--background));
   --handleOffset: 1.5rem;
   --handleOffsetCalculator: calc(var(--handleOffset) * -1);
   margin: 1rem;
@@ -112,7 +117,13 @@ input::-webkit-inner-spin-button {
 }
 
 .toggle:checked {
+  --bg: hsl(var(--primary));
   --handleOffsetCalculator: var(--handleOffset);
+}
+
+.toggle:disabled {
+  @apply cursor-not-allowed;
+  @apply opacity-75;
 }
 
 input,

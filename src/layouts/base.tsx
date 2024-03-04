@@ -13,6 +13,7 @@ export function BaseHtml(
           <link rel="stylesheet" href="/public/styles.css" />
           <script src="/public/hyperscript.js" />
           <script src="/public/htmx.js" />
+          <script src="https://unpkg.com/htmx.org/dist/ext/sse.js"></script>
           <script src="/public/script.js" defer />
           <title safe>{props.title || "TODO"}</title>
         </head>
