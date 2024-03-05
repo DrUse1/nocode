@@ -43,7 +43,18 @@ export function parseCookies(str: string) {
   return result;
 }
 
-const app = new Router().use(mainRouter).listen(3000, 2000);
+declare global {
+  var intervalId: Timer | null;
+}
+
+if (global.intervalId) {
+  clearInterval(global.intervalId);
+}
+
+const app = new Router()
+  .cron(1000, () => console.log("Hello"))
+  .use(mainRouter)
+  .listen(3000, 2000);
 
 console.log(
   `🦊 Server is running at http://${app.server?.hostname}:${app.server?.port}`,

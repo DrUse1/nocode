@@ -117,6 +117,11 @@ export class Router {
     return this;
   }
 
+  cron(time: number, cb: () => void) {
+    global.intervalId = setInterval(cb, time);
+    return this;
+  }
+
   /**
    * Listens on the specified port and maximum body size, and handles incoming requests.
    *

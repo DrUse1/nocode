@@ -5,77 +5,31 @@ import { BaseHtml } from "$/layouts/base";
 import S3 from "@aws-sdk/client-s3";
 import Lambda from "@aws-sdk/client-lambda";
 import { separateFileExtension } from "$/lib/utils";
-import {
-  Badge,
-  Button,
-  Input,
-  InputError,
-  InputGroup,
-  Label,
-  Separator,
-} from "$/components/Basic";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "$/components/Card";
-import { ChevronDownIcon } from "$/icons";
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableFooter,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "$/components/Table";
+import CloudWatch, {
+  DescribeLogStreamsCommand,
+  FilterLogEventsCommand,
+} from "@aws-sdk/client-cloudwatch-logs";
 export const S3Client = new S3.S3Client({ region: "eu-west-3" });
 export const LambdaClient = new Lambda.LambdaClient({ region: "eu-west-3" });
+export const CloudwatchClient = new CloudWatch.CloudWatchLogsClient({
+  region: "eu-west-3",
+});
 const mybucket = "mybucketregli";
 
 export const mainRouter = new Router()
   .get("/", () => {
     return (
       <BaseHtml class="m-4">
-        <div
-          hx-ext="sse"
-          sse-connect="/stream"
-          sse-swap="message"
-          hx-target="#stream"
-          hx-swap="beforeend"
-          id="triggerer"></div>
-        <div id="stream"></div>
+        <form
+          hx-post="/file"
+          hx-encoding="multipart/form-data"
+          hx-swap="none"
+          hx-replace-url="false">
+          <input type="file" name="file" id="file" />
+          <button>Submit</button>
+        </form>
       </BaseHtml>
     );
-  })
-  .get("/stream", () => {
-    const stream = new ReadableStream({
-      start(controller) {
-        let i = 1;
-        const timer = setInterval(() => {
-          if (i > 10) {
-            clearInterval(timer);
-            controller.enqueue(
-              `data: <div id="triggerer" hx-swap-oob="true"></div>\n\n`,
-            );
-            controller.close();
-            return;
-          }
-          controller.enqueue(`data: <span>Content ${i}</span>\n\n`);
-          i++;
-        }, 200);
-      },
-    });
-
-    return new Response(stream, {
-      headers: {
-        "content-type": "text/event-stream",
-      },
-    });
   })
   .post("/file", async (req) => {
     const formData = await req.formData();
@@ -87,17 +41,17 @@ export const mainRouter = new Router()
       const fileName =
         crypto.randomUUID() + separateFileExtension(fileBlob.name)[1];
 
-      const response = await S3Client.send(
-        new S3.PutObjectCommand({
-          Bucket: mybucket,
-          Key: fileName,
-          Body: fileBuffer,
-        }),
-      );
+      // const response = await S3Client.send(
+      //   new S3.PutObjectCommand({
+      //     Bucket: mybucket,
+      //     Key: fileName,
+      //     Body: fileBuffer,
+      //   }),
+      // );
 
-      if (response.$metadata.httpStatusCode !== 200) throw Error;
+      // if (response.$metadata.httpStatusCode !== 200) throw Error;
 
-      console.log(response);
+      // console.log(response);
 
       const payload = JSON.stringify({ file: fileName }); // remplacez par la charge utile à envoyer à votre fonction Lambda
 
@@ -105,27 +59,43 @@ export const mainRouter = new Router()
         new Lambda.InvokeCommand({
           FunctionName: "reglifunction",
           Payload: payload,
+          ClientContext: Buffer.from(
+            JSON.stringify({ userID: "123455" }),
+          ).toString("base64"),
         }),
       );
 
       if (responseLambda.$metadata.httpStatusCode !== 200) throw Error;
 
+      //TODO parse the result
       const result = JSON.parse(
         Buffer.from(responseLambda.Payload!).toString(),
       );
-      if (
-        !result ||
-        result.statusCode === undefined ||
-        result.statusCode !== 200 ||
-        result.body === undefined ||
-        typeof result !== "object"
-      )
-        throw Error;
 
-      console.log(result);
+      // console.log(responseLambda);
+
+      const requestId = responseLambda.$metadata.requestId;
+      console.log(requestId);
+
+      const logGroupName = "/aws/lambda/reglifunction";
+      // const requestId = "abbb2387-3834-41b1-947a-0cd24af8f391";
+
+      await new Promise((resolve) => setTimeout(resolve, 10000));
+
+      const responseCloudWatch = await CloudwatchClient.send(
+        new FilterLogEventsCommand({
+          logGroupName,
+          filterPattern: `"REPORT RequestId: ${requestId}"`,
+          startTime: Date.now() - 3600000, // 1 hour ago
+          endTime: Date.now(),
+        }),
+      );
+
+      console.log(responseCloudWatch);
 
       return "Nice";
     } catch (error) {
+      console.log(error);
       return "Not nice";
     }
   });
