@@ -1,7 +1,7 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split
-from sklearn.neighbors import KNeighborsClassifier, KNeighborsRegressor
-from sklearn.metrics import accuracy_score, mean_absolute_error, mean_squared_error, r2_score
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import accuracy_score
 
 def perform_knn_classification(data, target_variable, n_neighbors=5, weights='uniform', random_state=None):
     """
@@ -37,3 +37,4 @@ def perform_knn_classification(data, target_variable, n_neighbors=5, weights='un
     }
 
     return results
+
