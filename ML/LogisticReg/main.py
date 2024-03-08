@@ -51,10 +51,3 @@ def perform_logistic_regression(data, target_variable, test_size=0.2):
     }
 
     return results
-
-# Example usage
-df = pd.read_csv("GermanCreditSimple.csv", delimiter=";")
-print(df)
-
-logistic_regression_results = perform_logistic_regression(df, "Remboursement")
-print(logistic_regression_results)
