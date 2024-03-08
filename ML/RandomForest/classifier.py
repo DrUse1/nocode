@@ -24,5 +24,3 @@ def classfier_random_forest(data, target_variable, n_estimators=100, max_depth=N
         "Classification Report": classification_rep,
     }
 
-classification_results = train_and_evaluate_classifier(data, "target")
-print(classification_results)
