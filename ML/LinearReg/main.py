@@ -59,8 +59,3 @@ def perform_linear_regression(data, targetVariable):
 
     }
 
-
-homeprices = pd.read_csv("homeprices.csv")
-
-ln = (perform_linear_regression(homeprices, "price"))
-print(ln)
