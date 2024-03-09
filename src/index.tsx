@@ -52,7 +52,7 @@ if (global.intervalId) {
 }
 
 const app = new Router()
-  .cron(1000, () => console.log("Hello"))
+  // .cron(1000, () => console.log("Hello"))
   .use(mainRouter)
   .listen(3000, 2000);
 
