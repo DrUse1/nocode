@@ -19,36 +19,7 @@ declare global {
   namespace NodeJS {
     interface ProcessEnv extends TypeOf<typeof zodEnv> {}
   }
-}
-
-export async function htmlResponse(
-  body: string | Promise<string>,
-  options?: ResponseInit | undefined,
-) {
-  return new Response(await body, {
-    headers: {
-      "Content-Type": "text/html",
-    },
-    ...options,
-  });
-}
-
-export function parseCookies(str: string) {
-  let splitted = str.split("; ");
-  const result: Record<string, string> = {};
-  for (let i in splitted) {
-    const cur = splitted[i].split("=");
-    result[cur[0]] = cur[1];
-  }
-  return result;
-}
-
-declare global {
-  var intervalId: Timer | null;
-}
-
-if (global.intervalId) {
-  clearInterval(global.intervalId);
+  var interval: Timer | null;
 }
 
 const app = new Router()

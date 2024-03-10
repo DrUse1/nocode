@@ -1,5 +1,5 @@
 import { Server } from "bun";
-import { htmlResponse } from ".";
+import { htmlResponse } from "./lib/utils";
 
 // type IsPathParameter<Part extends string> = Part extends `:${infer Parameter}`
 //   ? Parameter
@@ -118,7 +118,10 @@ export class Router {
   }
 
   cron(time: number, cb: () => void) {
-    global.intervalId = setInterval(cb, time);
+    if (global.interval) {
+      clearInterval(global.interval);
+    }
+    global.interval = setInterval(cb, time);
     return this;
   }
 
