@@ -13,5 +13,3 @@ def generate_api_key(user_id):
     
     except Exception as e:
         return ("Error", e)
-
-print(generate_api_key("nig2"))

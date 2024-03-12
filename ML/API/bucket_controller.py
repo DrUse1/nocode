@@ -3,6 +3,8 @@ import config
 
 supabase = create_client(config.URL, config.SERVICE_ROLE)
 
-res = supabase.storage.create_bucket("Testneg1")
+res = supabase.storage.list_buckets()
 
-print(res)
+res1 = supabase.storage.from_('test1').list()
+
+print(res1)
