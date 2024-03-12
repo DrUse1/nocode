@@ -1,3 +1,10 @@
+declare global {
+  namespace NodeJS {
+    interface ProcessEnv extends TypeOf<typeof zodEnv> {}
+  }
+  var interval: Timer | null;
+}
+
 declare namespace JSX {
   interface HTMLAttributes {
     _?: string;

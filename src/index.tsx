@@ -15,13 +15,6 @@ const zodEnv = z.object({
   DB_TOKEN: z.string(),
 });
 
-declare global {
-  namespace NodeJS {
-    interface ProcessEnv extends TypeOf<typeof zodEnv> {}
-  }
-  var interval: Timer | null;
-}
-
 const app = new Router()
   // .cron(1000, () => console.log("Hello"))
   .use(mainRouter)
