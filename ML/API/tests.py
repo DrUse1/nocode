@@ -15,7 +15,8 @@ def test_protected_resource():
         print("Error! Response:", response.text)
 
 def test_upload_file():
-    upload_dataset.clean_and_upload("regression_sample")
+    x = upload_dataset.clean_and_upload("regression_sample.csv")
+    return x
     
 if __name__ == "__main__":
-    test_upload_file()
+    print(test_upload_file())

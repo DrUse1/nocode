@@ -1,4 +1,4 @@
-import requests, time
+import requests, time, os
 import pandas as pd
 
 BASE_URL = "http://127.0.0.1:5000/"
@@ -7,9 +7,8 @@ API_KEY = "key-69b6221d-8fc7-4077-b0bb-b14bab73c939"
 
 def clean_and_upload(dataset):
 
-    # Assume we cleaned the dataset
-    df = pd.read_csv(dataset + ".csv")
-    filename = "testdf123" + ".csv"
+    df = pd.read_csv(dataset)
+    filename = "testnZZig123" + ".csv"
     df.to_csv(filename , index=False)
 
     time.sleep(1)
@@ -28,4 +27,5 @@ def clean_and_upload(dataset):
         print("Success! Response:", response.json())
     else:
         print("Error! Response:", response.text)
+    
     return True

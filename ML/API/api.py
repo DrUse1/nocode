@@ -51,8 +51,6 @@ def upload_file():
         # Upload the file to Supabase storage
         with open(file.filename, 'rb') as f:
             supabase.storage.from_("test1").upload(file=f, path=file.filename)
-        
-        
 
         return jsonify({'message': 'File uploaded successfully'})
     
@@ -63,5 +61,6 @@ def upload_file():
 @app.route('/run_model')
 def run_model():
     pass
+
 if __name__ == '__main__':
     app.run(debug=True)

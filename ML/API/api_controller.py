@@ -13,3 +13,6 @@ def generate_api_key(user_id):
     
     except Exception as e:
         return ("Error", e)
+
+generate_api_key("user-c976c2ab-c377-4845-a3b7-89b0a88d2499")
+
