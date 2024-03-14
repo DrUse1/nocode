@@ -1,40 +1,35 @@
 import pandas as pd
-import os
 
-def dataset_info(dfName, delimiter=","):
-    file_size_bytes = (os.stat(dfName).st_size)/1024
-    file_size_mb = round(file_size_bytes / 1024, 2)
-        
-    df = pd.read_csv(dfName, delimiter=delimiter)
+def determine_problem_type(dataset, target_variable=None, delimiter=","):
+    dataset = pd.read_csv(dataset, delimiter=delimiter)
     
-    shape = df.shape
-    rows = shape[0]
-    columns = shape[1]
-    types = df.dtypes  # Replace with the actual path to your file
+    # If target_variable is None, it's likely an unsupervised learning task (clustering)
+    if target_variable is None:
+        return 'clustering'
 
-    out = {
-        "dataset_name" : dfName.replace(".csv", ""),
-        "rows" : rows,
-        "columns" : columns,
-        "size_in_mb" : file_size_mb,
-        "columns_dtypes" : dict(types)
-    }
+    # Check if the target variable exists in the dataset
+    if target_variable not in dataset.columns:
+        raise ValueError("Target variable not found in the dataset.")
 
-    return out
+    # Get the data type of the target variable
+    target_dtype = dataset[target_variable].dtype
 
-def typesList(dfName, delimiter=","):
-    types = list()
-    df = pd.read_csv(dfName, delimiter=delimiter)
-    for i in df.dtypes:
-        types.append(str(i))
+    # If the target variable is numeric and not just 0 and 1, it's likely a regression problem
+    if target_dtype in ['int64', 'float64'] and dataset[target_variable].nunique() > 2:
+        return 'regression'
     
-    return types
+    # If the target variable is categorical and binary (0 and 1), it's a binary classification problem
+    elif target_dtype in ['int64', 'float64'] and dataset[target_variable].nunique() == 2:
+        return 'binary_classification'
     
-def isDatasetMLReady(dfName, delimiter=","):
-    types = typesList(dfName, delimiter)
+    # If the target variable is categorical and has more than two unique values, it's a multi-class classification problem
+    elif target_dtype == 'object' and len(dataset[target_variable].unique()) > 2:
+        return 'multi_classification'
+    
+    else:
+        raise ValueError("Unsupported data type or format for the target variable.")
 
-    for i in types:
-        if i != "float64":
-            return False
-    
-    return True
+# Example usage:
+classificationxD = 'classification_sample.csv'
+dataset_type = determine_problem_type(classificationxD, "Remboursement", delimiter=';')
+print(dataset_type) #Should return Classification
