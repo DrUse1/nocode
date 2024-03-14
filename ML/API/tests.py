@@ -2,7 +2,7 @@ import requests, upload_dataset
 
 BASE_URL = "http://127.0.0.1:5000/"
 ENDPOINT = "protected-resource"
-API_KEY = "key-69b6221d-8fc7-4077-b0bb-b14bab73c939"  # Replace with a valid API key for testing
+API_KEY = "key-f905fbca-2161-4add-8270-165c47c18df6"  # Replace with a valid API key for testing
 
 def test_protected_resource():
     headers = {'API_KEY': API_KEY}

@@ -57,6 +57,14 @@ def upload_file():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+@app.route('/dataset_info')
+def dataset_info():
+    api_key = request.headers.get('API_KEY')
+    dataset_id = request.header.get('DATASET_ID')
+
+    
+
+
 
 @app.route('/run_model')
 def run_model():

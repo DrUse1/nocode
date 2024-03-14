@@ -3,7 +3,7 @@ import pandas as pd
 
 BASE_URL = "http://127.0.0.1:5000/"
 ENDPOINT = "upload-file"
-API_KEY = "key-69b6221d-8fc7-4077-b0bb-b14bab73c939"  
+API_KEY = "key-f905fbca-2161-4add-8270-165c47c18df6"  
 
 def clean_and_upload(dataset):
 
@@ -13,7 +13,7 @@ def clean_and_upload(dataset):
 
     time.sleep(1)
 
-    headers = {'Api-Key': API_KEY}
+    headers = {'API_KEY': API_KEY}
 
 
     FILE_PATH = filename

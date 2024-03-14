@@ -4,7 +4,7 @@ import pandas as pd
 
 supabase = create_client(config.URL, config.SERVICE_ROLE)
 
-def add_new_dataset_in_db(user_id, size, rows, columns, is_valid):
+def add_new_dataset_in_db(user_id, size, rows, columns, is_valid, _type):
     try:
         op = supabase.table("datasets").insert({
             "dataset_id" : creds.gen_dataset_id(),
@@ -12,7 +12,8 @@ def add_new_dataset_in_db(user_id, size, rows, columns, is_valid):
             "size" : size, 
             "rows" : rows,
             "columns" : columns,
-            "ml_ready" : is_valid
+            "ml_ready" : is_valid,
+            "type" : _type
         }).execute()
         return ''
     except Exception as e:
