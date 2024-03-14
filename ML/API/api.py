@@ -59,16 +59,28 @@ def upload_file():
 
 @app.route('/dataset_info')
 def dataset_info():
-    api_key = request.headers.get('API_KEY')
+    API_KEY = request.headers.get('API_KEY')
     dataset_id = request.header.get('DATASET_ID')
 
-    
 
 
 
-@app.route('/run_model')
+
+@app.route('/run_model', methods=["POST"])
 def run_model():
-    pass
+    API_KEY = request.headers.get("API_KEY")
+    algorithm_id = request.headers.get("algorithm_id")
+    dataset_id = request.headers.get("dataset_id")
+
+    # someLogicToCheckIfModelIsPossibleToRun():
+        #pass
+
+    #  nig = runLambdaFuncFromThere():
+        #return results
+
+    return jsonify({
+        "results" : nig
+    })
 
 if __name__ == '__main__':
     app.run(debug=True)
