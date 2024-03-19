@@ -1,0 +1,6 @@
+{
+  "bucket_name": "newbuckettestyuno",
+  "filename": "classification_sample.csv",
+  "target": "Remboursement",
+  "delimiter" : ";"
+}
