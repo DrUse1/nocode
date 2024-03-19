@@ -12,3 +12,5 @@ const client = createClient({
 });
 
 export const db = drizzle(client, { schema, logger: false });
+
+db.select().from(schema.users).where(eq(schema.users.email, "5Gx5F@example.com"));

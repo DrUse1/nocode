@@ -15,7 +15,6 @@ import { IncomingForm } from "formidable";
 
 import streamifier from "streamifier";
 import csvParser from "csv-parser";
-const fs = require("fs");
 
 export const S3Client = new S3.S3Client({ region: "eu-west-3" });
 export const LambdaClient = new Lambda.LambdaClient({ region: "eu-west-3" });
@@ -104,15 +103,15 @@ export const mainRouter = new Router()
 
     //   const payload = JSON.stringify({ file: fileName }); // remplacez par la charge utile à envoyer à votre fonction Lambda
 
-    //   const responseLambda = await LambdaClient.send(
-    //     new Lambda.InvokeCommand({
-    //       FunctionName: "reglifunction",
-    //       Payload: payload,
-    //       ClientContext: Buffer.from(
-    //         JSON.stringify({ userID: "123455" }),
-    //       ).toString("base64"),
-    //     }),
-    //   );
+    // const responseLambda = await LambdaClient.send(
+    //   new Lambda.InvokeCommand({
+    //     FunctionName: "reglifunction",
+    //     Payload: payload,
+    //     ClientContext: Buffer.from(
+    //       JSON.stringify({ userID: "123455" }),
+    //     ).toString("base64"),
+    //   }),
+    // );
 
     //   if (responseLambda.$metadata.httpStatusCode !== 200) throw Error;
 
@@ -129,16 +128,16 @@ export const mainRouter = new Router()
     //   const logGroupName = "/aws/lambda/reglifunction";
     //   // const requestId = "abbb2387-3834-41b1-947a-0cd24af8f391";
 
-    //   await new Promise((resolve) => setTimeout(resolve, 10000));
+    // await new Promise((resolve) => setTimeout(resolve, 10000));
 
-    //   const responseCloudWatch = await CloudwatchClient.send(
-    //     new FilterLogEventsCommand({
-    //       logGroupName,
-    //       filterPattern: `"REPORT RequestId: ${requestId}"`,
-    //       startTime: Date.now() - 3600000, // 1 hour ago
-    //       endTime: Date.now(),
-    //     }),
-    //   );
+    // const responseCloudWatch = await CloudwatchClient.send(
+    //   new FilterLogEventsCommand({
+    //     logGroupName,
+    //     filterPattern: `"REPORT RequestId: ${requestId}"`,
+    //     startTime: Date.now() - 3600000, // 1 hour ago
+    //     endTime: Date.now(),
+    //   }),
+    // );
 
     //   console.log(responseCloudWatch);
 
