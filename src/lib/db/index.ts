@@ -11,6 +11,4 @@ const client = createClient({
   authToken: process.env.DB_TOKEN,
 });
 
-export const db = drizzle(client, { schema, logger: false });
-
-db.select().from(schema.users).where(eq(schema.users.email, "5Gx5F@example.com"));
+export const db = drizzle(client, { schema, logger: true });

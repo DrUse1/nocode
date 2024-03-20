@@ -15,6 +15,9 @@ import { IncomingForm } from "formidable";
 
 import streamifier from "streamifier";
 import csvParser from "csv-parser";
+import { db } from "$/lib/db";
+import { datasets, users } from "$/lib/db/schema";
+import { eq } from "drizzle-orm";
 
 export const S3Client = new S3.S3Client({ region: "eu-west-3" });
 export const LambdaClient = new Lambda.LambdaClient({ region: "eu-west-3" });
@@ -35,8 +38,55 @@ export const mainRouter = new Router()
           <input type="file" name="file" id="file" />
           <button>Submit</button>
         </form>
+        <button hx-post="/user" hx-swap="none">
+          Add user
+        </button>
+        <button hx-post="/dataset" hx-swap="none">
+          Add dataset
+        </button>
       </BaseHtml>
     );
+  })
+  .post("/user", async (req) => {
+    const user = await db
+      .insert(users)
+      .values({
+        id: "123",
+        email: "druse@test.com",
+        name: "druse",
+        password: "123",
+      })
+      .returning();
+    console.log(user);
+    return "";
+  })
+  .post("/dataset", async (req) => {
+    const dataset = await db
+      .insert(datasets)
+      .values({
+        id: "dataset4",
+        name: "dataset_name",
+        description: "dataset description",
+        userId: "123",
+      })
+      .returning();
+    console.log(dataset);
+    return "";
+  })
+  .get("/user", async (req) => {
+    const datasets_query = await db.query.users.findFirst({
+      columns: {
+        email: true,
+        name: true,
+      },
+      with: {
+        datasets: true,
+      },
+    });
+
+    return new Response(JSON.stringify(datasets_query, null, 2), {
+      headers: { "Content-Type": "application/json" },
+    });
   })
   .post("/file", async (req) => {
     const reader = req.body!.getReader();

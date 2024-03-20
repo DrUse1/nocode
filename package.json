@@ -7,7 +7,9 @@
     "start": "bun src/index.tsx",
     "dev": "concurrently 'bun:watch-*'",
     "watch-js": "bun --hot src/index.tsx",
-    "watch-css": "bunx tailwindcss -i src/styles.css -o public/styles.css --watch"
+    "watch-css": "bunx tailwindcss -i src/styles.css -o public/styles.css --watch",
+    "drizzle:push": "bunx drizzle-kit push:sqlite",
+    "drizzle:studio": "bunx drizzle-kit studio"
   },
   "devDependencies": {
     "@types/sortablejs": "^1.15.4",
