@@ -27,19 +27,19 @@ export function Button({
       class={cn(
         "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50",
         {
-          "bg-primary text-primary-foreground hover:bg-primary/90 shadow":
+          "bg-primary text-primary-foreground shadow hover:bg-primary/90":
             variant === "default",
         },
         {
-          "text-secondary-foreground bg-secondary shadow-sm hover:bg-secondary/80":
+          "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80":
             variant === "secondary",
         },
         {
-          "bg-destructive text-destructive-foreground hover:bg-destructive/90 shadow-sm":
+          "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90":
             variant === "destructive",
         },
         {
-          "bg-background hover:bg-accent hover:text-accent-foreground border border-input shadow-sm":
+          "border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground":
             variant === "outline",
         },
         {
@@ -82,7 +82,7 @@ export function Separator({
     <div
       role="none"
       class={cn(
-        "bg-border shrink-0",
+        "shrink-0 bg-border",
         {
           "h-[1px] w-full": orientation === "horizontal",
           "h-full w-[1px]": orientation === "vertical",
@@ -111,7 +111,7 @@ export function Input({ className, ...props }: ElementProps<JSX.HtmlInputTag>) {
     <input
       {...props}
       class={cn(
-        "placeholder:text-muted-foreground flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50",
+        "flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50",
         className,
       )}
     />
@@ -126,7 +126,7 @@ export function Textarea({
     <textarea
       {...props}
       class={cn(
-        "placeholder:text-muted-foreground flex min-h-[60px] w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50",
+        "flex min-h-[60px] w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50",
         className,
       )}>
       {props.children as unknown}
@@ -144,7 +144,7 @@ export function InputGroup({ className, ...props }: ElementProps<JSX.HtmlTag>) {
 
 export function InputError({ className, ...props }: ElementProps<JSX.HtmlTag>) {
   return (
-    <span class={cn("text-error text-sm empty:hidden", className)} {...props}>
+    <span class={cn("text-sm text-error empty:hidden", className)} {...props}>
       {props.children as unknown}
     </span>
   );
@@ -167,15 +167,15 @@ export function Badge({
       class={cn(
         "inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
         {
-          "bg-primary text-primary-foreground hover:bg-primary/80 border-transparent shadow":
+          "border-transparent bg-primary text-primary-foreground shadow hover:bg-primary/80":
             variant === "default",
         },
         {
-          "text-secondary-foreground border-transparent bg-secondary hover:bg-secondary/80":
+          "border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80":
             variant === "secondary",
         },
         {
-          "bg-destructive text-destructive-foreground hover:bg-destructive/80 border-transparent shadow":
+          "border-transparent bg-destructive text-destructive-foreground shadow hover:bg-destructive/80":
             variant === "destructive",
         },
         {

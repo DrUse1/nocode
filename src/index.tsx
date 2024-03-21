@@ -6,6 +6,7 @@ import { Router } from "./router";
 import { mainRouter } from "./pages/main";
 import { BaseHtml } from "./layouts/base";
 import Html from "@kitajs/html";
+import { authRouter } from "./pages/auth";
 
 const zodEnv = z.object({
   JWT_SECRET: z.string(),
@@ -24,6 +25,7 @@ declare global {
 
 const app = new Router()
   // .cron(1000, () => console.log("Hello"))
+  .use(authRouter)
   .use(mainRouter)
   .listen(3000, 2000);
 
