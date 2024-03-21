@@ -37,6 +37,8 @@ export const mainRouter = new Router()
     }
     return (
       <BaseHtml class="m-4">
+        <a href="/auth/sign-in">Sign In</a>
+        <a href="/auth/logout">Logout</a>
         <form
           hx-post="/file"
           hx-encoding="multipart/form-data"

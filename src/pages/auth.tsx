@@ -312,4 +312,15 @@ export const authRouter = new Router({ prefix: "/auth" })
     console.log(user);
 
     return "";
-  });
+  })
+  .get(
+    "/logout",
+    () =>
+      new Response("", {
+        status: 302,
+        headers: {
+          "Set-Cookie": `session=; Path=/; HttpOnly; SameSite=strict; Expires=${new Date().toUTCString()}`,
+          Location: "/auth/sign-in",
+        },
+      }),
+  );
