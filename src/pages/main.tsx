@@ -15,7 +15,7 @@ import { IncomingForm } from "formidable";
 
 import streamifier from "streamifier";
 import csvParser from "csv-parser";
-import { db } from "$/lib/db";
+import { db, getSession } from "$/lib/db";
 import { datasets, users } from "$/lib/db/schema";
 import { eq } from "drizzle-orm";
 
@@ -27,7 +27,14 @@ export const CloudwatchClient = new CloudWatch.CloudWatchLogsClient({
 const mybucket = "mybucketregli";
 
 export const mainRouter = new Router()
-  .get("/", () => {
+  .get("/", async (req) => {
+    const userID = getSession(req);
+    if (userID) {
+      const user = await db.query.users.findFirst({
+        where: eq(users.id, userID),
+      });
+      console.log(user);
+    }
     return (
       <BaseHtml class="m-4">
         <form

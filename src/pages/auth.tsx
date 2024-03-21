@@ -12,6 +12,7 @@ import { db } from "$/lib/db";
 import { users } from "$/lib/db/schema";
 import { Router } from "$/router";
 import Html from "@kitajs/html";
+import { sign } from "jsonwebtoken";
 import { z } from "zod";
 
 const signinSchema = z
@@ -105,8 +106,6 @@ const signupSchema = z
       });
       return;
     }
-
-    console.log("nice sign up");
   });
 
 export const authRouter = new Router({ prefix: "/auth" })
@@ -257,7 +256,22 @@ export const authRouter = new Router({ prefix: "/auth" })
         </>
       );
     }
-    return "";
+
+    const user = await db.query.users.findFirst({
+      where: (users, { eq }) => eq(users.email, result.data.email),
+    });
+
+    if (user === undefined) {
+      return new Response("", { status: 401 });
+    }
+
+    return new Response("", {
+      status: 200,
+      headers: {
+        "Set-Cookie": `session=${sign(user.id, process.env.JWT_SECRET)}; Path=/; HttpOnly; SameSite=strict;`,
+        "HX-Location": "/",
+      },
+    });
   })
   .post("/sign-up", async (req) => {
     if (Number(req.headers.get("content-length")) >= 500) {
