@@ -1,6 +1,0 @@
-{
-  "bucket_name": "newbuckettestyuno",
-  "filename": "smalltestone.csv",
-  "target": "Target_Variable",
-  "delimiter" : ','
-}
