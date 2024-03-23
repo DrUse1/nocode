@@ -112,14 +112,16 @@ export const authRouter = new Router({ prefix: "/auth" })
   .get("/sign-in", () => {
     return (
       <BaseHtml>
-        <Button onclick="document.querySelector('html').classList.toggle('dark')">
-          Switch
-        </Button>
-        <main class="flex items-center justify-center">
+        <main class="flex items-center justify-center sm:min-h-screen">
+          <Button
+            className="fixed left-0 top-0"
+            onclick="document.querySelector('html').classList.toggle('dark')">
+            Switch
+          </Button>
           <form
             hx-post="/auth/sign-in"
             hx-swap="none"
-            class="mx-4 flex w-full max-w-xs flex-col">
+            class="m-4 flex w-full max-w-xs flex-col">
             <div class="flex flex-col space-y-2 text-center">
               <h3 class="text-2xl font-semibold tracking-tight">
                 Welcome back
@@ -179,15 +181,17 @@ export const authRouter = new Router({ prefix: "/auth" })
   .get("/sign-up", () => {
     return (
       <BaseHtml>
-        <Button onclick="document.querySelector('html').classList.toggle('dark')">
-          Switch
-        </Button>
-        <main class="flex items-center justify-center">
+        <main class="flex items-center justify-center sm:min-h-screen">
+          <Button
+            className="fixed left-0 top-0"
+            onclick="document.querySelector('html').classList.toggle('dark')">
+            Switch
+          </Button>
           <form
             hx-post="/auth/sign-up"
             hx-swap="none"
             hx-replace-url="false"
-            class="mx-4 flex w-full max-w-xs flex-col">
+            class="m-4 flex w-full max-w-xs flex-col">
             <div class="flex flex-col space-y-2 text-center">
               <h3 class="text-2xl font-semibold tracking-tight">Get started</h3>
               <p class="text-sm text-muted-foreground">Create a new account</p>
