@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify, send_file
 from supabase import create_client
-import config, json, time_controller, os, io, tempfile, requests
+import config, json, time_controller, os
 import pandas as pd
 
 app = Flask(__name__)
@@ -29,85 +29,89 @@ def auth():
     else:
         return jsonify({'message': 'Unauthorized access'}), 401
 
-@app.route('/upload_file', methods=['POST'])
-def upload_file():
-    try:
-        api_key = request.headers.get('apikey')
-        if not api_key or not authenticate_api_key(api_key):
-            return jsonify({'error': 'Invalid API key'}), 401
 
-        if 'file' not in request.files:
-            return jsonify({'error': 'No file part'}), 400
+import s3_handler
+import datasets
 
-        file = request.files['file']
+@app.route('/add_dataset_infos', methods=['POST'])
+def add_dataset():
+    bucket_name = request.headers.get('bucket_name')
+    filename = request.headers.get('filename')
+    delimiter = request.headers.get('delimiter')
+    user_id = request.headers.get('user_id')
 
-        if file.filename == '':
-            return jsonify({'error': 'No selected file'}), 400
+    if not all([bucket_name, filename, delimiter, user_id]):
+        return jsonify({"success": False, "message": "Missing required headers"}), 400
 
-        current_directory = os.getcwd()
-        file_path = os.path.join(current_directory, file.filename)
+    all_buckets = s3_handler.get_all_buckets()
+    if bucket_name not in all_buckets:
+        return jsonify({"success": False, "message": f"Bucket '{bucket_name}' not found"}), 404
 
-        file.save(file_path)
-
-        with open(file_path, 'rb') as f:
-            supabase.storage.from_("test1").upload(file=f, path=file.filename)
-
-        return jsonify({'message': 'File uploaded successfully'})
-
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
-
-@app.route('/get_dataset_url', methods=['GET'])
-def download_file():
-    try:
-        # Get the API key from the request headers
-        api_key = request.headers.get('apikey')
-
-        # Authenticate the API key
-        if not api_key or not authenticate_api_key(api_key):
-            return jsonify({'error': 'Invalid API key'}), 401
-
-        # Get the file source (name) and bucket name from the query parameters
-        source = request.args.get('source')
-        bucket_name = request.args.get('bucket_name')
-        if not source or not bucket_name:
-            return jsonify({'error': 'Missing source or bucket_name parameter'}), 400
-
-        # Get the public URL of the file from Supabase storage
-        public_url = supabase.storage.from_(bucket_name).get_public_url(source)
-
-        return jsonify({'data': public_url})
-
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
+    all_files = s3_handler.get_all_files_in_bucket(bucket_name)
     
-if __name__ == '__main__':
-    app.run(debug=True)
+    if filename not in all_files:
+        return jsonify({"success": False, "message": f"File '{filename}' not found in bucket '{bucket_name}'"}), 404
 
-@app.route('/dataset_info')
-def dataset_info():
-    API_KEY = request.headers.get('API_KEY')
-    dataset_id = request.header.get('DATASET_ID')
+    data = s3_handler.get_file_s3_key_id_and_size(filename, bucket_name)
+    key_id = data[0]
+    size = data[1]
+    df = s3_handler.make_dataset_usable(bucket_name, filename, delimiter)
+    infos = s3_handler.dataset_info(df)
+
+    op = datasets.add_new_dataset_in_db(key_id,bucket_name,  filename, user_id, size, infos["rows"], infos['columns'], None, None)
+
+    return jsonify({
+        "success": True,
+        "dataset_s3_key_id": key_id,
+        "db_status": op[2]
+    })
 
 
+@app.route('/is_dataset_ml_ready', methods=['GET', 'PUT'])
+def ml_ready():
+    dataset_id = request.headers.get('dataset_id')
+    bucket_name = request.headers.get('bucket_name')
+    delimiter = request.headers.get('delimiter')
+    import s3_handler
+    try:
+        df = s3_handler.make_dataset_usable_from_etag(bucket_name, dataset_id , delimiter = delimiter) 
+        import datasets
+        ml_ready = datasets.isDatasetMLReady(df)
+        datasets.updateMlReadyness(dataset_id, str(ml_ready))
+        return jsonify({
+                "success" :True,
+                "ml_ready" : ml_ready
+            })
+    except Exception as err:
+            return jsonify({"Error" : f"No dataset_id known : {dataset_id}"})
 
-
-
-@app.route('/run_model', methods=["POST"])
-def run_model():
+@app.route('/run_data', methods=["POST"])
+def run_data():
+    import core
     API_KEY = request.headers.get("API_KEY")
     algorithm_id = request.headers.get("algorithm_id")
     dataset_id = request.headers.get("dataset_id")
+    user_id = request.headers.get("user_id")
+    ml_algorithm = request.headers.get("ml_algorithm")
+    algorithm_id = request.headers.get("algorithm_id")
+    type_ = request.headers.get("type")
+    results = request.headers.get("results")
+    billed_ms = request.headers.get("billed_ms")
 
-    # someLogicToCheckIfModelIsPossibleToRun():
-        #pass
+    try:
+        op = core.create_new_run(dataset_id, user_id, ml_algorithm, algorithm_id, type_, results, billed_ms)
+        run_id = op[1]
+        
+        return jsonify({
+            "run_id" : run_id,
+            "success" : True
+        }) 
 
-    #  nig = runLambdaFuncFromThere():
-        #return results
-
-    return jsonify({
-        "results" : "s"
-    })
+    except Exception as err:
+        return jsonify({
+            "success" : False,
+            "Error" : err
+        })
 
 if __name__ == '__main__':
     app.run(debug=True)

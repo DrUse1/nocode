@@ -4,6 +4,7 @@ try:
     from sklearn.model_selection import train_test_split
     from sklearn.linear_model import LogisticRegression
     from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, roc_auc_score, confusion_matrix
+    import requests
     import boto3
 except Exception as e:
     print("Error Imports : {} ".format(e))
@@ -112,6 +113,8 @@ def perform_logistic_regression(data, target_variable, test_size=0.2):
 
     return results
 
+import json
+
 def lambda_handler(event, context):
     if validateEvent(event)[1]:
         bucket = event['bucket_name']
@@ -120,11 +123,32 @@ def lambda_handler(event, context):
         download_from_s3(bucket, filename)
         df_json = make_dataset_usable(bucket, filename, delimiter=delimiter)
         df = pd.DataFrame.from_dict(df_json)
+
+        type_ = "Classification"
+        algorithm_id = "algorithm-cb3928d9-9658-4036-a0e5-26605c2beb5f"
+        ml_algorithm = "Logistic Regression"
+        user_id = "nig212"
+
         if event['target']:
             results = perform_logistic_regression(df, event['target'])
+
+            headers = {
+            "dataset_id" : filename,
+            "user_id" : user_id,
+            "ml_algorithm" :  ml_algorithm,
+            "algorithm_id" : algorithm_id,
+            "type" : type_, 
+            "results" : json.dumps(results),
+            "billed_ms" : str(5000)
+            }
+            
+            r = requests.post("https://test-api-neg.onrender.com/run_data", headers=headers)
+            run_id = r.json()['run_id']
+
         return {
             "statusCode" : 200,
-            "res" : results
+            "res" : results,
+            "run_id" : run_id
         }
         
     else:

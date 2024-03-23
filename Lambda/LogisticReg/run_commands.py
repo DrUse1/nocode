@@ -1,5 +1,5 @@
-name = 'test-lambda-logistic-reg'
-container_name = 'test-logistic-reg'
+name = 'test-lambda-logistic-reg-core-supabse'
+container_name = 'test-logistic-reg-core-supabse'
 region = 'eu-west-3'
 account_id = '339712719329'
 
