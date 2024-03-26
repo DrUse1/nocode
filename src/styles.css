@@ -4,10 +4,10 @@
 
 @layer base {
   :root {
-    --test: hsl(222.2 47.4% 11.2%);
-
     --mainWhite: 0 0 99%;
     --mainBlack: 0 0 10%;
+
+    --plainBackground: 0 0 100%;
 
     --background: var(--mainWhite);
     --foreground: var(--mainBlack);
@@ -44,7 +44,9 @@
   }
 
   .dark {
-    --background: 0 0 1%;
+    --plainBackground: 0 0 0%;
+
+    --background: 0 0 5%;
     --foreground: var(--mainWhite);
 
     --primary: var(--mainWhite);

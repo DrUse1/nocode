@@ -113,11 +113,6 @@ export const authRouter = new Router({ prefix: "/auth" })
     return (
       <BaseHtml>
         <main class="flex items-center justify-center sm:min-h-screen">
-          <Button
-            className="fixed left-0 top-0"
-            onclick="document.querySelector('html').classList.toggle('dark')">
-            Switch
-          </Button>
           <form
             hx-post="/auth/sign-in"
             hx-swap="none"
@@ -182,11 +177,6 @@ export const authRouter = new Router({ prefix: "/auth" })
     return (
       <BaseHtml>
         <main class="flex items-center justify-center sm:min-h-screen">
-          <Button
-            className="fixed left-0 top-0"
-            onclick="document.querySelector('html').classList.toggle('dark')">
-            Switch
-          </Button>
           <form
             hx-post="/auth/sign-up"
             hx-swap="none"

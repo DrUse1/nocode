@@ -37,8 +37,8 @@ export const mainRouter = new Router()
       console.log(user);
     }
     return (
-      <BaseHtml>
-        <nav class="flex h-16 border-b px-6">
+      <BaseHtml class="bg-background">
+        <nav class="bg-plain flex h-16 border-b px-6">
           <div class="mx-auto flex w-full max-w-5xl items-center">
             <a href="/" class="text-xl font-bold uppercase">
               Logo
@@ -50,7 +50,9 @@ export const mainRouter = new Router()
                 <a href="#">Blog</a>
               </nav>
               <div class="flex items-center">
-                <Button variant="outline">Sign In</Button>
+                <Button variant="outline" href="/auth/sign-in">
+                  Sign In
+                </Button>
               </div>
             </div>
             <div class="group ml-auto block sm:hidden">
@@ -98,7 +100,10 @@ export const mainRouter = new Router()
                   </a>
                 </nav>
                 <div class="mt-auto border-t p-4">
-                  <Button variant="outline" className="w-full">
+                  <Button
+                    href="/auth/sign-in"
+                    variant="outline"
+                    className="w-full">
                     Sign In
                   </Button>
                 </div>
@@ -106,7 +111,6 @@ export const mainRouter = new Router()
             </div>
           </div>
         </nav>
-        <a href="/auth/sign-in">Sign In</a>
         <a href="/auth/logout">Logout</a>
         <form
           hx-post="/file"
