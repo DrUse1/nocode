@@ -174,19 +174,19 @@ export const mainRouter = new Router()
     //   const fileName =
     //     crypto.randomUUID() + separateFileExtension(fileBlob.name)[1];
 
-    //   // const response = await S3Client.send(
-    //   //   new S3.PutObjectCommand({
-    //   //     Bucket: mybucket,
-    //   //     Key: fileName,
-    //   //     Body: fileBuffer,
-    //   //   }),
-    //   // );
+    // const response = await S3Client.send(
+    //   new S3.PutObjectCommand({
+    //     Bucket: mybucket,
+    //     Key: fileName,
+    //     Body: fileBuffer,
+    //   }),
+    // );
 
-    //   // if (response.$metadata.httpStatusCode !== 200) throw Error;
+    // if (response.$metadata.httpStatusCode !== 200) throw Error;
 
-    //   // console.log(response);
+    // console.log(response);
 
-    //   const payload = JSON.stringify({ file: fileName }); // remplacez par la charge utile à envoyer à votre fonction Lambda
+    // const payload = JSON.stringify({ file: fileName }); // remplacez par la charge utile à envoyer à votre fonction Lambda
 
     // const responseLambda = await LambdaClient.send(
     //   new Lambda.InvokeCommand({

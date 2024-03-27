@@ -7,6 +7,7 @@ import { mainRouter } from "./pages/main";
 import { BaseHtml } from "./layouts/base";
 import Html from "@kitajs/html";
 import { authRouter } from "./pages/auth";
+import { dashboardRouter } from "./pages/dashboard";
 
 const zodEnv = z.object({
   JWT_SECRET: z.string(),
@@ -14,6 +15,7 @@ const zodEnv = z.object({
   STRIPE_SECRET_KEY: z.string(),
   DB_URL: z.string(),
   DB_TOKEN: z.string(),
+  LEMON_KEY: z.string(),
 });
 
 declare global {
@@ -27,6 +29,7 @@ const app = new Router()
   // .cron(1000, () => console.log("Hello"))
   .use(authRouter)
   .use(mainRouter)
+  .use(dashboardRouter)
   .listen(3000, 2000);
 
 console.log(

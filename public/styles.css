@@ -471,30 +471,6 @@ video {
   --radius: 0.5rem;
 }
 
-.dark {
-  --plainBackground: 0 0 0%;
-  --background: 0 0 5%;
-  --foreground: var(--mainWhite);
-  --primary: var(--mainWhite);
-  --primary-foreground: var(--mainBlack);
-  --secondary: 0 0 15%;
-  --secondary-foreground: var(--mainWhite);
-  --muted: 0 0 10%;
-  --muted-foreground: 0 0 57%;
-  --accent: 0 0 17%;
-  --accent-foreground: 0 0 98%;
-  --card: 0 0 4%;
-  --card-foreground: var(--mainWhite);
-  --popover: 0 0 4%;
-  --popover-foreground: 0 0 65%;
-  --border: 0 0 17%;
-  --input: 0 0 17%;
-  --destructive: 0 63% 31%;
-  --destructive-foreground: 210 40% 98%;
-  --ring: 0 0 17%;
-  --radius: 0.5rem;
-}
-
 * {
   border-color: hsl(var(--border));
 }
@@ -651,8 +627,17 @@ body {
   z-index: 20;
 }
 
+.m-2 {
+  margin: 0.5rem;
+}
+
 .m-4 {
   margin: 1rem;
+}
+
+.mx-2 {
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
 }
 
 .mx-auto {
@@ -663,6 +648,10 @@ body {
 .my-4 {
   margin-top: 1rem;
   margin-bottom: 1rem;
+}
+
+.mb-0 {
+  margin-bottom: 0px;
 }
 
 .ml-8 {
@@ -679,6 +668,10 @@ body {
 
 .mr-auto {
   margin-right: auto;
+}
+
+.mt-0 {
+  margin-top: 0px;
 }
 
 .mt-2 {
@@ -755,6 +748,10 @@ body {
   height: 100%;
 }
 
+.h-screen {
+  height: 100vh;
+}
+
 .min-h-\[60px\] {
   min-height: 60px;
 }
@@ -773,6 +770,10 @@ body {
 
 .w-full {
   width: 100%;
+}
+
+.min-w-60 {
+  min-width: 15rem;
 }
 
 .max-w-5xl {
@@ -1221,6 +1222,10 @@ textarea {
 
 .hover\:bg-destructive\/90:hover {
   background-color: hsl(var(--destructive) / 0.9);
+}
+
+.hover\:bg-muted:hover {
+  background-color: hsl(var(--muted));
 }
 
 .hover\:bg-muted\/50:hover {
