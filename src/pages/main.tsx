@@ -25,6 +25,7 @@ export const LambdaClient = new Lambda.LambdaClient({ region: "eu-west-3" });
 export const CloudwatchClient = new CloudWatch.CloudWatchLogsClient({
   region: "eu-west-3",
 });
+
 const mybucket = "mybucketregli";
 
 export const mainRouter = new Router()

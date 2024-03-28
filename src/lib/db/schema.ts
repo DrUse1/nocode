@@ -16,9 +16,7 @@ export const datasets = sqliteTable("datasets", {
   userId: text("userId")
     .notNull()
     .references(() => users.id),
-  s3keyId: text("s3keyId").notNull(),
-  s3bucketId: text("s3bucketId").notNull(),
-  s3regionId: text("s3regionId").notNull(),
+  s3fileId: text("s3fileId").notNull(),
 });
 
 export const usersRelations = relations(users, ({ many }) => ({

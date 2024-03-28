@@ -3,9 +3,21 @@ import { BaseHtml } from "$/layouts/base";
 import { Router } from "$/router";
 import Html from "@kitajs/html";
 import * as ls from "@lemonsqueezy/lemonsqueezy.js";
+import Stripe from "stripe";
 
-const STORE_ID = "79079" as const;
-const PRODUCT_ID = "232980" as const;
+// https://billing.stripe.com/p/session/test_YWNjdF8xTnlpSGhBbTRqcEhKbWQzLF9Qb2pWOWRhbDE1aG5OaEIxODJiMGdaYWpmU3lVZjdD0100BCyM4XLI
+
+// const STORE_ID = "79079" as const;
+// const PRODUCT_ID = "232980" as const;
+// const VARIANT_ID = "317668" as const;
+
+const PRODUCT_ID = "prod_PojFdjjm0beL5G" as const;
+const PRICE_ID = "price_1Oz5n6Am4jpHJmd3mtCMWJje" as const;
+const CUSTOMER_ID = "cus_PojOCKBZmv3Zc6" as const;
+const SUBSCRIPTION_ID = "sub_1Oz6WiAm4jpHJmd3uoKNQtFd" as const;
+const SUBSCRIPTION_ITEM_ID = "si_Pok0CyGBVaX3Xi" as const;
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 ls.lemonSqueezySetup({ apiKey: process.env.LEMON_KEY });
 
@@ -29,9 +41,11 @@ async function lsRequest(
 
 export const dashboardRouter = new Router({ prefix: "/dashboard" })
   .get("/", async () => {
-    console.log(
-      JSON.stringify((await ls.getCustomer("2566490")).data, null, 2),
-    );
+    const amount = (
+      await stripe.subscriptionItems.listUsageRecordSummaries(
+        SUBSCRIPTION_ITEM_ID,
+      )
+    ).data[0].total_usage;
 
     return (
       <BaseHtml>
@@ -125,41 +139,52 @@ export const dashboardRouter = new Router({ prefix: "/dashboard" })
               <span>Search</span>
             </a>
           </aside>
-          <main>
-            {/* <button hx-post="/dashboard/customer" hx-swap="none">
+          <main class="flex flex-col">
+            <div>Amount = {amount}</div>
+            <button hx-get="/dashboard/info" hx-swap="none">
+              Get info
+            </button>
+            <button hx-post="/dashboard/customer" hx-swap="none">
               New customer
-            </button> */}
+            </button>
             <button hx-post="/dashboard/checkout" hx-swap="none">
               New checkout
+            </button>
+            <button hx-post="/dashboard/unit" hx-swap="none">
+              New Unit
             </button>
           </main>
         </div>
       </BaseHtml>
     );
   })
+  .get("/info", async () => {
+    // console.log(await stripe.subscriptionItems.retrieve(SUBSCRIPTION_ITEM_ID));
+
+    return "";
+  })
   .post("/customer", async () => {
-    const response = await lsRequest("/v1/customers", "POST", {
-      data: {
-        type: "customers",
-        attributes: {
-          name: "Dr Use",
-          email: "a@a.com",
-        },
-        relationships: {
-          store: {
-            data: {
-              type: "stores",
-              id: STORE_ID,
-            },
-          },
-        },
-      },
-    });
-    console.log(response);
+    // console.log(await stripe.customers.del("cus_PojORijdMHlR3Q"));
     return "";
   })
   .post("/checkout", async () => {
-    const response = JSON.stringify(await ls.getProduct(PRODUCT_ID), null, 2);
-    console.log(response);
+    console.log(
+      await stripe.checkout.sessions.create({
+        customer: CUSTOMER_ID,
+        line_items: [{ price: PRICE_ID }],
+        mode: "subscription",
+        currency: "usd",
+        success_url: "http://localhost:3000/dashboard",
+      }),
+    );
+    return "";
+  })
+  .post("/unit", async () => {
+    console.log(
+      await stripe.subscriptionItems.createUsageRecord(SUBSCRIPTION_ITEM_ID, {
+        quantity: 4,
+        action: "increment",
+      }),
+    );
     return "";
   });

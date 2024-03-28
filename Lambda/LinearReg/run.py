@@ -72,8 +72,6 @@ def validateEvent(event):
 try:
     import pandas as pd
     import numpy as np
-    import pandas as pd
-    import numpy as np
     from sklearn.linear_model import LinearRegression
     from sklearn.metrics import r2_score
     from sklearn.metrics import mean_squared_error
@@ -83,9 +81,7 @@ try:
 except Exception as e:
     print("Error Imports : {} ".format(e))
 
-
 def perform_linear_regression(data, targetVariable):
-
     """
     Perform linear regression using scikit-learn.
 
@@ -149,7 +145,7 @@ def lambda_handler(event, context):
             "statusCode" : 200,
             "res" : results
         }
-        
+
     else:
         return {
             "status" : "Bucket or file not found"
