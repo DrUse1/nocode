@@ -1,0 +1,15 @@
+blinker
+click
+colorama
+flask
+importlib-metadata
+itsdangerous
+Jinja2
+MarkupSafe
+werkzeug
+zipp
+boto3
+flask-cors
+supabase
+python-dotenv
+pandas
