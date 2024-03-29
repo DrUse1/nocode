@@ -10,7 +10,7 @@ import CloudWatch, {
   FilterLogEventsCommand,
 } from "@aws-sdk/client-cloudwatch-logs";
 
-import { db, getSession } from "$/lib/db";
+import { db, getUserFromSession } from "$/lib/db";
 import { datasets, users } from "$/lib/db/schema";
 import { eq } from "drizzle-orm";
 import { Button } from "$/components/Basic";
@@ -30,13 +30,8 @@ const mybucket = "mybucketregli";
 
 export const mainRouter = new Router()
   .get("/", async (req) => {
-    const userID = getSession(req);
-    if (userID) {
-      const user = await db.query.users.findFirst({
-        where: eq(users.id, userID),
-      });
-      console.log(user);
-    }
+    const user = await getUserFromSession(req);
+    console.log(user);
     return (
       <BaseHtml class="bg-background">
         <nav class="bg-plain flex h-16 border-b px-6">
@@ -51,9 +46,15 @@ export const mainRouter = new Router()
                 <a href="#">Blog</a>
               </nav>
               <div class="flex items-center">
-                <Button variant="outline" href="/auth/sign-in">
-                  Sign In
-                </Button>
+                {user ? (
+                  <Button variant="outline" href="/dashboard">
+                    Dashboard
+                  </Button>
+                ) : (
+                  <Button variant="outline" href="/auth/sign-in">
+                    Sign In
+                  </Button>
+                )}
               </div>
             </div>
             <div class="group ml-auto block sm:hidden">

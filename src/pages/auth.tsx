@@ -302,9 +302,13 @@ export const authRouter = new Router({ prefix: "/auth" })
       })
       .returning();
 
-    console.log(user);
-
-    return "";
+    return new Response("", {
+      status: 200,
+      headers: {
+        "Set-Cookie": `session=${sign(user[0].id, process.env.JWT_SECRET)}; Path=/; HttpOnly; SameSite=strict;`,
+        "HX-Location": "/",
+      },
+    });
   })
   .get(
     "/logout",
