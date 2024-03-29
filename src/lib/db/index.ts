@@ -1,18 +1,27 @@
-import Stripe from "stripe";
-import { createClient } from "@libsql/client";
-import { drizzle } from "drizzle-orm/libsql";
-import * as schema from "./schema";
+import { drizzle } from "drizzle-orm/postgres-js";
+import postgres from "postgres";
 import { parseCookies } from "../utils";
 import { verify } from "jsonwebtoken";
+import { users } from "./schema";
+import { migrate } from "drizzle-orm/postgres-js/migrator";
+import * as schema from "./schema";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+// const client = createClient({
+//   url: process.env.DB_URL,
+//   authToken: process.env.DB_TOKEN,
+// });
 
-const client = createClient({
-  url: process.env.DB_URL,
-  authToken: process.env.DB_TOKEN,
-});
+// export const db = drizzle(client, { schema, logger: false });
 
-export const db = drizzle(client, { schema, logger: false });
+const connectionString = process.env.DATABASE_URL;
+
+// Disable prefetch as it is not supported for "Transaction" pool mode
+export const client = postgres(connectionString);
+export const db = drizzle(client, {schema});
+// (async () => {
+//   // migrate(db, { migrationsFolder: "drizzle" });
+//   console.log(await db.select().from(users));
+// })();
 
 export function getSession(req: Request) {
   const cookie = req.headers.get("cookie");

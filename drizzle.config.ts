@@ -2,10 +2,10 @@ import type { Config } from "drizzle-kit";
 
 export default {
   schema: "./src/lib/db/schema.ts",
-  driver: "turso",
+  out: "./drizzle",
+  driver: "pg",
   dbCredentials: {
-    url: process.env.DB_URL,
-    authToken: process.env.DB_TOKEN,
+    connectionString: process.env.DB_URL,
   },
   verbose: true,
   strict: true,

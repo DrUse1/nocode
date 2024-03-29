@@ -8,13 +8,14 @@
     "dev": "concurrently 'bun:watch-*'",
     "watch-js": "bun --hot src/index.tsx",
     "watch-css": "bunx tailwindcss -i src/styles.css -o public/styles.css --watch",
-    "drizzle:push": "bunx drizzle-kit push:sqlite",
+    "drizzle:push": "bunx drizzle-kit push:pg",
     "drizzle:studio": "bunx drizzle-kit studio"
   },
   "devDependencies": {
     "@types/sortablejs": "^1.15.4",
     "bun-types": "latest",
     "drizzle-kit": "^0.20.13",
+    "pg": "^8.11.3",
     "prettier": "^3.2.5",
     "prettier-plugin-tailwindcss": "^0.5.11",
     "tailwindcss": "^3.3.3"
@@ -39,9 +40,10 @@
     "@types/node": "^20.11.24",
     "clsx": "^2.1.0",
     "concurrently": "^8.2.2",
-    "drizzle-orm": "^0.29.3",
+    "drizzle-orm": "^0.30.6",
     "jsonwebtoken": "^9.0.2",
-    "stripe": "^14.12.0",
+    "postgres": "^3.4.4",
+    "stripe": "^14.23.0",
     "tailwind-merge": "^2.2.0",
     "typescript": "^5.2.2",
     "zod": "^3.22.4"

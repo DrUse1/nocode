@@ -300,8 +300,7 @@ export const authRouter = new Router({ prefix: "/auth" })
         email: result.data.email,
         password: result.data.password,
       })
-      .returning()
-      .get();
+      .returning();
 
     console.log(user);
 

@@ -16,6 +16,7 @@ const zodEnv = z.object({
   DB_URL: z.string(),
   DB_TOKEN: z.string(),
   LEMON_KEY: z.string(),
+  DATABASE_URL: z.string(),
 });
 
 declare global {

@@ -1,15 +1,15 @@
 import { relations } from "drizzle-orm";
-import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { boolean, integer, pgTable, text } from "drizzle-orm/pg-core";
 
-export const users = sqliteTable("users", {
+export const users = pgTable("users", {
   id: text("id").notNull().primaryKey(),
   email: text("email").notNull(),
   password: text("password").notNull(),
   forget: text("forget").notNull().default(""),
-  isAdmin: integer("isAdmin", { mode: "boolean" }).notNull().default(false),
+  isAdmin: boolean("isAdmin").notNull().default(false),
 });
 
-export const datasets = sqliteTable("datasets", {
+export const datasets = pgTable("datasets", {
   id: text("id").notNull().primaryKey(),
   name: text("name").notNull(),
   description: text("description").notNull().default(""),
