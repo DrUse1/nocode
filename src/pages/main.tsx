@@ -29,7 +29,7 @@ export const mainRouter = new Router()
     console.log(user);
     return (
       <BaseHtml class="bg-background">
-        <nav class="bg-plain flex h-16 border-b px-6">
+        <nav class="flex h-16 border-b bg-plain px-6">
           <div class="mx-auto flex w-full max-w-5xl items-center">
             <a href="/" class="text-xl font-bold uppercase">
               Logo
@@ -122,32 +122,36 @@ export const mainRouter = new Router()
     );
   })
   .post("/file", async (req) => {
-    const formData = await req.formData();
+    return "";
 
-    const fileBlob = formData.get("file") as Blob;
+    // return "";
 
-    const fileExtension = separateFileExtension(fileBlob.name)[1];
+    // const formData = await req.formData();
 
-    const fileArrayBuffer = await fileBlob.arrayBuffer();
-    const fileBuffer = Buffer.from(fileArrayBuffer);
+    // const fileBlob = formData.get("file") as Blob;
 
-    try {
-      const response = await S3Client.send(
-        new S3.PutObjectCommand({
-          Bucket: mybucket + "d",
-          Key: crypto.randomUUID() + fileExtension,
-          Body: fileBuffer,
-        }),
-      );
+    // const fileExtension = separateFileExtension(fileBlob.name)[1];
 
-      const etag = response.ETag;
+    // const fileArrayBuffer = await fileBlob.arrayBuffer();
+    // const fileBuffer = Buffer.from(fileArrayBuffer);
 
-      console.log(etag);
-      return "";
-    } catch (error) {
-      console.log(error);
-      return new Response("", { status: 400 });
-    }
+    // try {
+    //   const response = await S3Client.send(
+    //     new S3.PutObjectCommand({
+    //       Bucket: mybucket + "d",
+    //       Key: crypto.randomUUID() + fileExtension,
+    //       Body: fileBuffer,
+    //     }),
+    //   );
+
+    //   const etag = response.ETag;
+
+    //   console.log(etag);
+    //   return "";
+    // } catch (error) {
+    //   console.log(error);
+    //   return new Response("", { status: 400 });
+    // }
 
     // const payload = JSON.stringify({ file: fileName }); // remplacez par la charge utile à envoyer à votre fonction Lambda
 
