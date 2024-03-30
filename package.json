@@ -12,7 +12,6 @@
     "drizzle:studio": "bunx drizzle-kit studio"
   },
   "devDependencies": {
-    "@types/sortablejs": "^1.15.4",
     "bun-types": "latest",
     "drizzle-kit": "^0.20.13",
     "pg": "^8.11.3",

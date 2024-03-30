@@ -14,11 +14,6 @@ import { db, getUserFromSession } from "$/lib/db";
 import { datasets, users } from "$/lib/db/schema";
 import { eq } from "drizzle-orm";
 import { Button } from "$/components/Basic";
-import {
-  Dropdown,
-  DropdownContent,
-  DropdownTrigger,
-} from "$/components/Dropdown";
 
 export const S3Client = new S3.S3Client({ region: "eu-west-3" });
 export const LambdaClient = new Lambda.LambdaClient({ region: "eu-west-3" });
@@ -120,73 +115,39 @@ export const mainRouter = new Router()
           hx-swap="none"
           hx-replace-url="false">
           <input type="file" name="file" id="file" />
+          <input type="text" name="delimiter" id="delimiter" />
           <button>Submit</button>
         </form>
       </BaseHtml>
     );
   })
   .post("/file", async (req) => {
-    const reader = req.body!.getReader();
+    const formData = await req.formData();
 
-    let done = true;
+    const fileBlob = formData.get("file") as Blob;
 
-    const uploadStream = S3Client.send(
-      new S3.PutObjectCommand({
-        Bucket: mybucket,
-        Key: "testFile.json",
-        // Body: req.body,
-      }),
-    );
+    const fileExtension = separateFileExtension(fileBlob.name)[1];
 
-    let i = 0;
-    while (!done) {
-      const { value, done: doneReading } = await reader.read();
-      done = doneReading;
+    const fileArrayBuffer = await fileBlob.arrayBuffer();
+    const fileBuffer = Buffer.from(fileArrayBuffer);
 
-      if (value) {
-        const decoder = new TextDecoder();
-        const str = decoder.decode(value);
-      }
+    try {
+      const response = await S3Client.send(
+        new S3.PutObjectCommand({
+          Bucket: mybucket + "d",
+          Key: crypto.randomUUID() + fileExtension,
+          Body: fileBuffer,
+        }),
+      );
+
+      const etag = response.ETag;
+
+      console.log(etag);
+      return "";
+    } catch (error) {
+      console.log(error);
+      return new Response("", { status: 400 });
     }
-    // console.log(result);
-    console.log("done");
-    // Fermer le stream
-    reader.cancel("Stream closed");
-
-    // for await (const chunk of reader) {
-    //   const decoder = new TextDecoder();
-    //   const str = decoder.decode(chunk);
-    //   console.log(str);
-    // }
-    // console.log("done");
-
-    // const file = formData.get("file") as Blob;
-    // const csvText = await file.text();
-    // const firstLines = csvText.split("\n").slice(0, 5);
-    // const firstLinesCols = firstLines.map((e) => e.split(",").slice(0, 5));
-
-    // console.log(firstLinesCols);
-
-    return "";
-    // try {
-    //   const fileBlob = formData.get("file") as Blob;
-    //   const fileArrayBuffer = await fileBlob.arrayBuffer();
-    //   const fileBuffer = Buffer.from(fileArrayBuffer);
-
-    //   const fileName =
-    //     crypto.randomUUID() + separateFileExtension(fileBlob.name)[1];
-
-    // const response = await S3Client.send(
-    //   new S3.PutObjectCommand({
-    //     Bucket: mybucket,
-    //     Key: fileName,
-    //     Body: fileBuffer,
-    //   }),
-    // );
-
-    // if (response.$metadata.httpStatusCode !== 200) throw Error;
-
-    // console.log(response);
 
     // const payload = JSON.stringify({ file: fileName }); // remplacez par la charge utile à envoyer à votre fonction Lambda
 
