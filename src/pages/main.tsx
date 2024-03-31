@@ -15,6 +15,10 @@ import { datasets, users } from "$/lib/db/schema";
 import { eq } from "drizzle-orm";
 import { Button } from "$/components/Basic";
 
+import { Upload } from "@aws-sdk/lib-storage";
+
+import { Readable } from "stream";
+
 export const S3Client = new S3.S3Client({ region: "eu-west-3" });
 export const LambdaClient = new Lambda.LambdaClient({ region: "eu-west-3" });
 export const CloudwatchClient = new CloudWatch.CloudWatchLogsClient({
@@ -115,18 +119,105 @@ export const mainRouter = new Router()
           hx-swap="none"
           hx-replace-url="false">
           <input type="file" name="file" id="file" />
-          <input type="text" name="delimiter" id="delimiter" />
+          {/* <input type="text" name="delimiter" id="delimiter" /> */}
           <button>Submit</button>
         </form>
       </BaseHtml>
     );
   })
   .post("/file", async (req) => {
-    return "";
+    // const data = await fetch(
+    //   "https://raw.githubusercontent.com/DrUse1/nocode/main/ML/RandomForest/classification_sample.csv",
+    // );
+
+    const uploader = new Upload({
+      client: S3Client,
+      params: {
+        Bucket: "mybucketregli",
+        Key: crypto.randomUUID() + ".csv",
+        Body: req.body,
+      },
+    });
+
+    try {
+      const data = await uploader.done();
+      console.log("File uploaded successfully:", data.Location);
+      return "";
+    } catch (err) {
+      console.error("Error uploading file:", err);
+      return "";
+    }
+    // const body = req.body;
+
+    // const arrBuf = await Bun.readableStreamToArrayBuffer(body);
+    // const nodeBuf = Buffer.from(arrBuf);
+
+    // try {
+    //   const response = await S3Client.send(
+    //     new S3.PutObjectCommand({
+    //       Bucket: mybucket,
+    //       Key: crypto.randomUUID() + ".csv",
+    //       Body: nodeBuf,
+    //     }),
+    //   );
+
+    //   const etag = response.ETag;
+
+    //   console.log(etag);
+    //   return "";
+    // } catch (error) {
+    //   console.log(error);
+    //   return new Response("", { status: 400 });
+    // }
 
     // return "";
 
-    // const formData = await req.formData();
+    // const uploader = new Upload({
+    //   client: S3Client,
+    //   params: {
+    //     Bucket: mybucket,
+    //     Key: "key.csv",
+    //     Body: req.body,
+    //   },
+    // });
+
+    // try {
+    //   const data = await uploader.done();
+    //   console.log("File uploaded successfully:", data.Location);
+    // } catch (err) {
+    //   console.error("Error uploading file:", err);
+    // }
+
+    // try {
+    //   const nodeBuf = Buffer.from(req.body);
+
+    //   const response = await S3Client.send(
+    //     new S3.PutObjectCommand({
+    //       Bucket: mybucket,
+    //       Key: crypto.randomUUID() + ".csv",
+    //       Body: nodeBuf,
+    //     }),
+    //   );
+
+    //   const etag = response.ETag;
+
+    //   console.log(etag);
+    //   return "";
+    // } catch (error) {
+    //   console.log(error);
+    //   return new Response("", { status: 400 });
+    // }
+
+    // return "";
+
+    // // return "";
+
+    // let formData = await req.formData();
+    // console.log(formData);
+    // // formData = null;
+    // console.log(formData);
+    // console.log(Bun.gc(true));
+    // return new Response("", { status: 200 });
 
     // const fileBlob = formData.get("file") as Blob;
 

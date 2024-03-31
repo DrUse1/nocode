@@ -7,20 +7,12 @@ import { migrate } from "drizzle-orm/postgres-js/migrator";
 import * as schema from "./schema";
 import { eq } from "drizzle-orm";
 
-// const client = createClient({
-//   url: process.env.DB_URL,
-//   authToken: process.env.DB_TOKEN,
-// });
-
-// export const db = drizzle(client, { schema, logger: false });
-
 const connectionString = process.env.DATABASE_URL;
 
-// Disable prefetch as it is not supported for "Transaction" pool mode
 export const client = postgres(connectionString);
 export const db = drizzle(client, { schema });
 // (async () => {
-//   // migrate(db, { migrationsFolder: "drizzle" });
+//   migrate(db, { migrationsFolder: "drizzle" });
 //   console.log(await db.select().from(users));
 // })();
 

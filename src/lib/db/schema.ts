@@ -1,5 +1,6 @@
-import { relations } from "drizzle-orm";
+import { eq, relations } from "drizzle-orm";
 import { boolean, integer, pgTable, text } from "drizzle-orm/pg-core";
+import { db } from ".";
 
 export const users = pgTable("users", {
   id: text("id").notNull().primaryKey(),

@@ -262,7 +262,7 @@ export const authRouter = new Router({ prefix: "/auth" })
     return new Response("", {
       status: 200,
       headers: {
-        "Set-Cookie": `session=${sign(user.id, process.env.JWT_SECRET)}; Path=/; HttpOnly; SameSite=strict;`,
+        "Set-Cookie": `session=${sign(user.id, process.env.JWT_SECRET)}; Path=/; HttpOnly;`,
         "HX-Location": "/",
       },
     });

@@ -27,7 +27,7 @@ declare global {
 }
 
 const app = new Router()
-  // .cron(1000, () => console.log("Hello"))
+  // .cron(5000, () => console.log(Bun.gc(true)))
   .use(authRouter)
   .use(mainRouter)
   .use(dashboardRouter)
